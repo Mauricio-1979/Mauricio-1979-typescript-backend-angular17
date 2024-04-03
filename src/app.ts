@@ -1,49 +1,18 @@
 import express from 'express';
 import routesProduct from './routes/product';
 import routesUser from './routes/user';
-import { conectarDB } from './db/database';
+//import { conectarDB } from './db/database';
 import cors from 'cors';
-
-class Server{
-
-  private app:  express.Application;
-  private port: String;
-
-
-
+require('dotenv').config();
+ 
+    const app = express();
+    app.use(cors());
+    app.use(express.json());
+    
+      
+    app.use('/api/products', routesProduct);
+    app.use('/api/users', routesUser);
   
 
-  constructor(){
-    this.app = express();
-    this.port = process.env.PORT || "4000";
-    this.listen();
-    this.midlewares();
 
-
-
-    this.routes();
-  }
-
-  listen(){
-    this.app.listen(this.port, () => {
-      console.log(`Server running in port http://localhost:${this.port}`);
-      conectarDB();
-    })
-  }
-
-  routes(){
-    this.app.use('/api/products', routesProduct);
-    this.app.use('/api/users', routesUser);
-  }
-
-
-
-
-  midlewares(){
-    this.app.use(express.json());
-    this.app.use(cors());
-  }
-
-}
-
-export default Server;
+export default app;
